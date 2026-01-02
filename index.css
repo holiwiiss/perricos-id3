@@ -1,18 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
 body {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  text-align: center;
+  font-family:'Montserrat', Times, serif;
 }
 
 h1 {
-  margin-bottom: 20px;
+  margin: 2rem 0;
+  font-size: 54px;
 }
 
-button {
-  margin: 5px;
-  padding: 10px 15px;
-  border: 1px solid #000000;
-  background-color: #f0f0f0;
+.btn-perricos {
+  margin: 1rem 1rem;
+  padding: 1rem 2rem;
+
+  border: 1px solid #c2c2c2;
+  border-radius: 10px;
+  background-color: #f7f6f6;
   display: inline-block;
+
+  box-shadow: 0px 6px 5px 0px rgba(112, 112, 112, 0.055);
+}
+.btn-perricos:hover{
+  background-color: #3a2a97;
+  color: #f7f6f6;
+  cursor: pointer;
+}
+.btn-selected{
+  background-color: #3a2a97;
+  color: #f7f6f6;
 }
 
 div {
@@ -22,14 +41,43 @@ div {
 .card {
   display: inline-block;
   vertical-align: top;
-  border: 1px solid #030303;
-  padding: 10px;
-  max-width: 450px;
+
+  border: 1px solid #eeeeee;
+  border-radius: 20px;
+  box-shadow: 6px 6px 5px 0px rgba(112, 112, 112, 0.055);
+
+  padding: 3rem 0;
+  width: 300px;
   text-align: center;
   margin: 10px;
 }
 
+.card p{
+  font-size: 28px;
+  margin-top: -2rem;
+}
+
+.card button{
+  padding: 0.75rem 0.75rem;
+  border: 1px solid #c2c2c2;
+  border-radius: 10px;
+  cursor:pointer;
+  display: inline-block;
+}
 img {
   max-width: 100%;
   max-height: 150px;
+}
+.btn-unselected{
+  background-color: #f7f6f6;
+  color: black;
+}
+.btn-like{
+  background-color: #791a17;
+  color: white;
+}
+
+.btn-dislike{
+  background-color: #0a5f2a;
+  color:white;
 }
