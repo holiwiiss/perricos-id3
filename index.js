@@ -41,7 +41,7 @@ renderPerricoArray(perricosArray);
 const addPerrico = async () => {
   const perricoImg = await getRandomDogImage();
 
-  const randomNumber = Math.floor(Math.random() * 3)
+  const randomNumber = Math.floor(Math.random() * 5)
   const perricoName = namePerricosArray[randomNumber]
 
   const randomNumber2 = Math.floor(Math.random() * 10)
@@ -69,7 +69,7 @@ const addCincoPerrico = async () => {
 
     const perricoImg = await getRandomDogImage();
 
-    const randomNumber = Math.floor(Math.random() * 3)
+    const randomNumber = Math.floor(Math.random() * 5)
     const perricoName = namePerricosArray[randomNumber]
 
     const randomNumber2 = Math.floor(Math.random() * 10)
