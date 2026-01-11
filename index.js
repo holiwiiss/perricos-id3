@@ -1,5 +1,6 @@
 const perricosArray = []; //esto era const
-const namePerricosArray = ["Princesita", "Ramon", "Mierdon", "Cuqui", "Turron"]
+const namePerricosArray = [{name:"Princesita", isSelected:false}, {name:"Ramon", isSelected: false}, {name:"Mierdon", isSelected:false}, {name:"Cuqui", isSelected:false}, {name:"Turron", isSelected: false}]
+const perricosFiltrados = []
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //
@@ -18,12 +19,10 @@ function renderPerricoArray(perricosList) {
       <br />
       <p>${dog.like}❤️ ${dog.dislike}🤮</p>
       <div>
-      <button class="${dog.initialLike !== dog.like ? 'btn-like' : 'btn-unselected'}" onClick="likePerrico(${index})">Preciosísimo</button> 
-      <button class="${dog.initialDislike !== dog.dislike ? 'btn-dislike' : 'btn-unselected'}" onClick="dislikePerrico(${index})">Feísisimo</button>
+      <button class="${dog.isLiked ? 'btn-like' : 'btn-unselected'}" onClick="likePerrico(${index})">Preciosísimo</button> 
+      <button class="${dog.isDisliked ? 'btn-dislike' : 'btn-unselected'}" onClick="dislikePerrico(${index})">Feísisimo</button>
       </div>
     </div>`;
-    console.log(dog.initialLike)
-    console.log(dog.like)
     //console.log('innerHtml posición', index, dogList.innerHTML);
 
     dogList.innerHTML += htmlAdd;
@@ -32,6 +31,37 @@ function renderPerricoArray(perricosList) {
 
 renderPerricoArray(perricosArray);
 
+function renderBotonesPerricos(){
+  const buttons = document.querySelector('.name-perricos');
+  buttons.innerHTML = '';
+
+  namePerricosArray.forEach((nombre,index)=>{
+    const htmlAdd = `<button class="${nombre.isSelected ? 'btn-selected' : 'btn-perricos'}" onclick="onlyOnePerrico(${index})">${nombre.name}</button>`
+
+    buttons.innerHTML += htmlAdd;
+  });
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+//
+//    Get un perrico
+//
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+const getPerrico = async () => {
+
+  const perricoImg = await getRandomDogImage();
+
+  const randomNumber = Math.floor(Math.random() * 5)
+  const perricoName = namePerricosArray[randomNumber].name
+
+  const randomNumber2 = Math.floor(Math.random() * 10)
+  const randomNumber3 = Math.floor(Math.random() * 10)
+
+  perricosArray.push({perricoImg, perricoName, isLiked:false, like:randomNumber2, isDisliked:false, dislike:randomNumber3});
+};
+
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //
 //    Añadir un perrico
@@ -39,20 +69,8 @@ renderPerricoArray(perricosArray);
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 const addPerrico = async () => {
-  const perricoImg = await getRandomDogImage();
-
-  const randomNumber = Math.floor(Math.random() * 5)
-  const perricoName = namePerricosArray[randomNumber]
-
-  const randomNumber2 = Math.floor(Math.random() * 10)
-  const randomNumber3 = Math.floor(Math.random() * 10)
-
-  perricosArray.push({perricoImg, perricoName, isLiked:false, initialLike:randomNumber2, like:randomNumber2, isDisliked:false, initialDislike:randomNumber3, dislike:randomNumber3});
-
-  console.log(perricoImg)
-  console.log(perricoName)
-  console.log(perricosArray)
-
+  await getPerrico()
+  renderBotonesPerricos()
   renderPerricoArray(perricosArray);
 };
 
@@ -63,23 +81,11 @@ const addPerrico = async () => {
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 const addCincoPerrico = async () => {
-  let cont = 0
-
-  while(cont<=4){
-
-    const perricoImg = await getRandomDogImage();
-
-    const randomNumber = Math.floor(Math.random() * 5)
-    const perricoName = namePerricosArray[randomNumber]
-
-    const randomNumber2 = Math.floor(Math.random() * 10)
-    const randomNumber3 = Math.floor(Math.random() * 10)
-
-    perricosArray.push({perricoImg, perricoName,  isLiked:false, initialLike:randomNumber2, like:randomNumber2, isDisliked:false, initialDislike:randomNumber3, dislike:randomNumber3});
-
-    cont ++
-  }
   
+  for(let i= 0; i<5; i++){
+    await getPerrico()
+  }
+  renderBotonesPerricos()
   renderPerricoArray(perricosArray);
 };
 
@@ -89,22 +95,24 @@ const addCincoPerrico = async () => {
 //
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-let selectedPerrico=null
-
-function onlyOnePerrico(name){
-  console.log(name)
+function onlyOnePerrico(index){
   
-  if(selectedPerrico === name){
-    selectedPerrico = null
+  namePerricosArray[index].isSelected = !namePerricosArray[index].isSelected
+
+  const selectedPerricosNames = namePerricosArray.filter(boton => boton.isSelected).map(boton => boton.name)
+
+  if(selectedPerricosNames.length ===0){
+    renderBotonesPerricos()
     renderPerricoArray(perricosArray)
-  }else{
-    selectedPerrico = name
-    listOnlyPerrico = perricosArray.filter(function(perrico){
-      return perrico.perricoName.includes(name)
-    })
-    console.log(listOnlyPerrico)
-    renderPerricoArray(listOnlyPerrico)
+    return
   }
+
+  const arrayPerricosToShow = perricosArray.filter(function (dog){
+    return selectedPerricosNames.includes(dog.perricoName)
+  })
+
+  renderBotonesPerricos()
+  renderPerricoArray(arrayPerricosToShow)
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -152,65 +160,4 @@ document.querySelector('#add-1-perrico').addEventListener('click', function () {
 
 document.querySelector('#add-5-perrico').addEventListener('click', function () {
   addCincoPerrico();
-});
-
-const btnLucas = document.querySelector('#perrico-lucas')
-const btnMierdon = document.querySelector('#perrico-mierdon')
-const btnRamon = document.querySelector('#perrico-ramon')
-const btnCuqui = document.querySelector('#perrico-cuqui')
-const btnTurron = document.querySelector('#perrico-turron')
-
-btnLucas.addEventListener('click', function () {
-  onlyOnePerrico(this.innerText);
-  if(perricosArray.length){
-    btnLucas.classList.toggle('btn-selected')
-    btnMierdon.classList.remove('btn-selected')
-    btnRamon.classList.remove('btn-selected')
-    btnCuqui.classList.remove('btn-selected')
-    btnTurron.classList.remove('btn-selected')
-  }
-});
-
-btnMierdon.addEventListener('click', function () {
-  onlyOnePerrico(this.innerText);
-  if(perricosArray.length){
-    btnLucas.classList.remove('btn-selected')
-    btnMierdon.classList.toggle('btn-selected')
-    btnRamon.classList.remove('btn-selected')
-    btnCuqui.classList.remove('btn-selected')
-    btnTurron.classList.remove('btn-selected')
-  }
-});
-
-btnRamon.addEventListener('click', function () {
-  onlyOnePerrico(this.innerText);
-  if(perricosArray.length){
-    btnLucas.classList.remove('btn-selected')
-    btnMierdon.classList.remove('btn-selected')
-    btnRamon.classList.toggle('btn-selected')
-    btnCuqui.classList.remove('btn-selected')
-    btnTurron.classList.remove('btn-selected')
-  }
-});
-
-btnCuqui.addEventListener('click', function () {
-  onlyOnePerrico(this.innerText);
-  if(perricosArray.length){
-    btnLucas.classList.remove('btn-selected')
-    btnMierdon.classList.remove('btn-selected')
-    btnRamon.classList.remove('btn-selected')
-    btnCuqui.classList.toggle('btn-selected')
-    btnTurron.classList.remove('btn-selected')
-  }
-});
-
-btnTurron.addEventListener('click', function () {
-  onlyOnePerrico(this.innerText);
-  if(perricosArray.length){
-    btnLucas.classList.remove('btn-selected')
-    btnMierdon.classList.remove('btn-selected')
-    btnRamon.classList.remove('btn-selected')
-    btnCuqui.classList.remove('btn-selected')
-    btnTurron.classList.toggle('btn-selected')
-  }
 });
