@@ -1,7 +1,8 @@
 const perricosArray = []; //esto era const
 const namePerricosArray = [{name:"Princesita", isSelected:false}, {name:"Ramon", isSelected: false}, {name:"Mierdon", isSelected:false}, {name:"Cuqui", isSelected:false}, {name:"Turron", isSelected: false}]
 const perricosFiltrados = []
-
+const selector = document.getElementById("perrico-breed");
+const allBreeds = []
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //
 //    Visualizar los perricos
@@ -16,6 +17,7 @@ function renderPerricoArray(perricosList) {
     const htmlAdd = `<div class="card">
       <img src="${dog.perricoImg}" alt="Perro" />
       <h2>${dog.perricoName}</h2>
+      <h3>Raza: ${dog.perricoBreed} </h3>
       <br />
       <p>${dog.like}❤️ ${dog.dislike}🤮</p>
       <div>
@@ -58,10 +60,41 @@ const getPerrico = async () => {
   const randomNumber2 = Math.floor(Math.random() * 10)
   const randomNumber3 = Math.floor(Math.random() * 10)
 
-  perricosArray.push({perricoImg, perricoName, isLiked:false, like:randomNumber2, isDisliked:false, dislike:randomNumber3});
+  let perricoBreed = ''
+  selector.value != 'random' ? perricoBreed = selector.value : perricoBreed= allBreeds[Math.floor(Math.random() * 164)]
+
+  perricosArray.push({perricoImg, perricoName, perricoBreed, isLiked:false, like:randomNumber2, isDisliked:false, dislike:randomNumber3});
 };
 
+const getRazas= async () => {
+  const breeds= await getAllBreeds()
+  
+  Object.keys(breeds).forEach(breed => {
+    const subreed = breeds[breed];
 
+    if(subreed.length === 0){
+      allBreeds.push(breed)
+    }else {
+      subreed.forEach(sub => {
+        allBreeds.push(breed + ' ' + sub)
+      });
+    }
+  });
+  return allBreeds;
+};
+
+async function renderSelector(){
+  const breeds = await getRazas()
+  
+  breeds.forEach(breed => {
+    const option = document.createElement("option");
+    option.value = breed;
+    option.textContent = breed;
+    selector.appendChild(option);
+  }); 
+}
+
+renderSelector()
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //
 //    Añadir un perrico
@@ -154,10 +187,38 @@ function dislikePerrico(index){
 //
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-document.querySelector('#add-1-perrico').addEventListener('click', function () {
-  addPerrico();
+/*function enableAllButtons(){
+  document.querySelectorAll('.btn-perricos').addEventListener('click',  function () {
+    this.disabled = false
+  })
+}
+function disableAllButtons(){
+  document.querySelectorAll('.btn-perricos').addEventListener('click',  function () {
+    this.disabled = true
+  })
+}*/
+
+
+document.querySelector('#add-1-perrico').addEventListener('click', async function () {
+  //disableAllButtons()
+  await addPerrico();
+  //enableAllButtons()
 });
 
-document.querySelector('#add-5-perrico').addEventListener('click', function () {
-  addCincoPerrico();
+document.querySelector('#add-5-perrico').addEventListener('click', async function () {
+  //disableAllButtons()
+  await addCincoPerrico();
+  //enableAllButtons()
 });
+
+document.querySelector('#buscador').addEventListener('input',function (e) {
+  const palabra = e.target.value;
+  if(palabra === ''){
+    renderPerricoArray(perricosArray)
+  }
+  const arrayPerricosToShow = perricosArray.filter(function (dog){
+    return dog.perricoName.includes(palabra)
+  })
+  renderPerricoArray(arrayPerricosToShow)
+
+})
