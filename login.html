@@ -4,14 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perricos - Login</title>
+    <link rel="stylesheet" href="./css/login.css" />
 </head>
 <body>
-    <h1>Registrate o incia sesión</h1>
-    <label for="email_user">Email</label>
-    <input type="email" id="email_user" placeholder="Introduce tu correo electronico...">
-    <label for="password_user">Contraseña</label>
-    <input type="password" id="password_user" placeholder="Introduce tu contraseña">
-    <button>Aceptar</button>
-    <script src="./js/login.js"></script>
+
+    <main>
+
+        <img src="./images/perro.jpg" alt="imagen-login" class="login-img">
+
+
+        <div class="login-info-container">
+            <h1>Inicia sesión / Crear cuenta</h1>
+            <p>Para poder visualizar y participar en el raking de los perricos más lindos del país</p>
+            <div class="form-container">
+                <label for="email_user" class="label-form">Email</label>
+                <input type="email" id="email_user" class="input-form" placeholder="Introduce tu correo electronico..." required>
+                <span class="txt-error">Holaa</span>
+                <label for="password_user" class="label-form">Contraseña</label>
+                <input type="password" id="password_user" class="input-form" placeholder="Introduce tu contraseña">
+                
+                <span class="txt-error">Holaa</span>
+
+                <div class="buttons-container">
+                    <button id="email-signup-btn" class="btn-form" category="negative">Regitrarse</button>
+                    <button id="email-signin-btn" class="btn-form">Iniciar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhhhR5vG6LyAbZ1afLjyh4kluNQgzzgmI",
+            authDomain: "login-test-master.firebaseapp.com",
+            projectId: "login-test-master",
+            storageBucket: "login-test-master.firebasestorage.app",
+            messagingSenderId: "787134045837",
+            appId: "1:787134045837:web:0b476c1d4aeaaae64f4cc4",
+            measurementId: "G-SPPF1V9YLB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+    <script type="module" src="./js/login.js"></script>
 </body>
 </html>

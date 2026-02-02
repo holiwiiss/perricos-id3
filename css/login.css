@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Inter';
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+h1,p{
+    margin: 0;
+}
+
+main {
+    height: 80%;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 2rem;
+    border-radius: 32px;
+    background-color: #fafafa;
+    box-shadow: 5px 5px 15px #C49A6C;
+    box-sizing: border-box;
+}
+
+.login-img {
+    height: 100%;
+    width: 50%;
+    background-color: #FFA94D;
+    border-radius: 16px;
+}
+
+.login-info-container {
+    box-sizing: border-box;
+    width:50%;
+    padding: 0 5rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.5rem;
+}
+
+.login-info-container p {
+    color: rgb(94, 94, 94);
+}
+.form-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.label-form {
+    margin-top:8px;
+    font-weight: 600;
+}
+
+.input-form {
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #dddddd;
+    padding-left: 1rem;
+}
+
+.txt-error {
+    margin-top: -4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: red;
+    display: none;
+}
+
+.buttons-container {
+    width: 100%;
+    margin-top: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-form {
+    box-sizing: border-box;
+    width: 48%;
+    height: 40px;
+    border-radius: 8px;
+    background-color: #FFE066;
+    border: 1px solid #C49A6C;
+    font-weight: 600;
+    cursor: pointer;
+    color: #684f34;
+}
+
+.btn-form[category="negative"] {
+    background-color: #684f34;
+    color: #FAFAFA;
+}
