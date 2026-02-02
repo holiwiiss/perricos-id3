@@ -198,7 +198,6 @@ function disableAllButtons(){
   })
 }*/
 
-
 document.querySelector('#add-1-perrico').addEventListener('click', async function () {
   //disableAllButtons()
   await addPerrico();
