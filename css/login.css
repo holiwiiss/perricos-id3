@@ -9,6 +9,8 @@ body {
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    background-color: #a79a8b;
+    color:#684f34;
 }
 h1,p{
     margin: 0;
