@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
-from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 // Config Firebase
 const firebaseConfig = {
@@ -16,12 +16,15 @@ const firebaseConfig = {
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
+
 
 // Inputs
 const userName = document.getElementById("email_user");
 const userPassword = document.getElementById("password_user");
 const emailSignInBtn = document.getElementById('email-signin-btn');
 const emailSignUpBtn = document.getElementById('email-signup-btn');
+//const anyade = document.getElementById('anyadir')
 
 emailSignInBtn.addEventListener('click', async () => {
     const email = userName.value;
@@ -48,3 +51,29 @@ emailSignUpBtn.addEventListener('click', async () => {
         console.error('Email sign in error:', error.message);
     }
 });
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const uid = user.uid;
+        console.log('usuario: ' + uid)
+        window.location.replace("./app/home.html");
+        
+    } else {
+        console.log('usuario no registrado')
+    }
+});
+
+/*
+anyade.addEventListener('click', async()=>{
+    try {
+        const docRef = await addDoc(collection(db, "perretes"), {
+        raza: "Si",
+        subraza: "Señor",
+        edad: 24
+        });
+        console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+})*/
+

@@ -6,20 +6,30 @@
     <script src="../api/api.js"></script>
     <title>Votalperrico</title>
     <link rel="stylesheet" href="../css/home.css" />
+    <link rel="stylesheet" href="../css/topmenu.css" />
   </head>
   <body>
-    <h1>Votalperrico</h1>
-    <div class="anyadir-perricos"> 
-      <select id="perrico-breed">
-        <option value="random"> Raza Random</option>
-      </select>
-      <button id="add-1-perrico" class="btn-perricos">Añadir 1 perrico</button> 
-      <button id="add-5-perrico" class="btn-perricos">Añadir 5 perricos</button> 
-      <input type="text" id="buscador" placeholder="Escribe algo..." />
+
+    <div class="topbar__container">
+        <img src="#" alt="logo-web">
+        <nav>
+            <ul>
+                <li>
+                    <a id="cerrar-sesion">Cerrar sesión</a>
+                </li>
+            </ul>
+        </nav>
     </div>
-    <div class="name-perricos">
-      
+    <div class="header__container">
+      <h1>Los perretes más on fire del país</h1>
+      <div class="filters__container"> 
+        <select id="perrico-breed">
+          <option value="random"> Raza Random</option>
+        </select>
+        <input type="text" id="buscador" placeholder="Escribe algo..." />
+      </div>
     </div>
+
     <div id="dog-list"></div>
 
     <nav class="bottom-menu">
@@ -30,5 +40,5 @@
     </nav>
   </body>
 
-  <script src="./home.js"></script>
+  <script type="module" src="./home.js"></script>
 </html>

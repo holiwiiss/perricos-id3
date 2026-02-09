@@ -1,88 +1,154 @@
-const perricosArray = []; //esto era const
-const namePerricosArray = [{name:"Princesita", isSelected:false}, {name:"Ramon", isSelected: false}, {name:"Mierdon", isSelected:false}, {name:"Cuqui", isSelected:false}, {name:"Turron", isSelected: false}]
-const perricosFiltrados = []
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, collection, getDoc, doc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBhhhR5vG6LyAbZ1afLjyh4kluNQgzzgmI",
+    authDomain: "login-test-master.firebaseapp.com",
+    projectId: "login-test-master",
+    storageBucket: "login-test-master.firebasestorage.app",
+    messagingSenderId: "787134045837",
+    appId: "1:787134045837:web:0b476c1d4aeaaae64f4cc4",
+    measurementId: "G-SPPF1V9YLB"
+};
+
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const perricosNombres = []; //esto era const
 const selector = document.getElementById("perrico-breed");
+const btnCerrarSesion = document.getElementById("cerrar-sesion");
 const allBreeds = []
+
+let userid = ''
+
+
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    userid = user.uid;
+    console.log('Hola: ' + userid)
+    
+    let isUserExist = false;
+    const todosUser = await getDocs(collection(db, "users"));
+    todosUser.forEach((docSnap) => {
+      if (docSnap.id === userid) {
+        isUserExist = true;
+      }
+    });
+
+  if(!isUserExist){
+    await setDoc(doc(db, "users", userid), {
+      likedDogs: [],
+      email: user.email,
+  });
+}
+      
+  } else {
+      window.location.replace("../login.html");
+  }
+});
+
+btnCerrarSesion.addEventListener('click', async () => {
+  try {
+    await signOut(auth);
+    window.location.replace("../login.html");
+  } catch (error) {
+    console.error('Sign out error:', error.message);
+  }
+});
+
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //
 //    Visualizar los perricos
 //
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-function renderPerricoArray(perricosList) {
+async function renderPerricoArray() {
   const dogList = document.querySelector('#dog-list');
   dogList.innerHTML = '';
 
-  perricosList.forEach((dog, index) => {
-    const htmlAdd = `<div class="card">
-      <img src="${dog.perricoImg}" alt="Perro" />
-      <h2>${dog.perricoName}</h2>
-      <h3>Raza: ${dog.perricoBreed} </h3>
-      <br />
-      <p>${dog.like}❤️ ${dog.dislike}🤮</p>
-      <div>
-      <button class="${dog.isLiked ? 'btn-like' : 'btn-unselected'}" onClick="likePerrico(${index})">Preciosísimo</button> 
-      <button class="${dog.isDisliked ? 'btn-dislike' : 'btn-unselected'}" onClick="dislikePerrico(${index})">Feísisimo</button>
-      </div>
-    </div>`;
-    //console.log('innerHtml posición', index, dogList.innerHTML);
+  const querySnapshot = await getDocs(collection(db, "perretes"));
+  querySnapshot.forEach((doc) => {
+    const perro = doc.data();
 
-    dogList.innerHTML += htmlAdd;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="${perro.img}" alt="Perro" />
+      <h2>${perro.nombre}</h2>
+      <h3>Raza: ${perro.raza}</h3>
+      <p>${perro.likes} ❤️</p>
+    `;
+
+    const btn = document.createElement('button');
+    btn.textContent = 'Preciosísimo';
+    btn.addEventListener('click', () => likePerrico(doc.id));
+
+    card.appendChild(btn);
+    dogList.appendChild(card);
+
   });
-}
-
-renderPerricoArray(perricosArray);
-
-function renderBotonesPerricos(){
-  const buttons = document.querySelector('.name-perricos');
-  buttons.innerHTML = '';
-
-  namePerricosArray.forEach((nombre,index)=>{
-    const htmlAdd = `<button class="${nombre.isSelected ? 'btn-selected' : 'btn-perricos'}" onclick="onlyOnePerrico(${index})">${nombre.name}</button>`
-
-    buttons.innerHTML += htmlAdd;
-  });
-}
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//
-//    Get un perrico
-//
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-const getPerrico = async () => {
-
-  const perricoImg = await getRandomDogImage();
-
-  const randomNumber = Math.floor(Math.random() * 5)
-  const perricoName = namePerricosArray[randomNumber].name
-
-  const randomNumber2 = Math.floor(Math.random() * 10)
-  const randomNumber3 = Math.floor(Math.random() * 10)
-
-  let perricoBreed = ''
-  selector.value != 'random' ? perricoBreed = selector.value : perricoBreed= allBreeds[Math.floor(Math.random() * 164)]
-
-  perricosArray.push({perricoImg, perricoName, perricoBreed, isLiked:false, like:randomNumber2, isDisliked:false, dislike:randomNumber3});
-};
-
-const getRazas= async () => {
-  const breeds= await getAllBreeds()
   
-  Object.keys(breeds).forEach(breed => {
-    const subreed = breeds[breed];
+}
 
-    if(subreed.length === 0){
-      allBreeds.push(breed)
-    }else {
-      subreed.forEach(sub => {
-        allBreeds.push(breed + ' ' + sub)
+renderPerricoArray();
+
+async function likePerrico(idPerrico){
+
+  const userRef = doc(db, "users", userid);
+  const userSnap = await getDoc(userRef);
+  
+  if (!userSnap.exists()) {
+    console.log("No such document!");
+    return
+  }
+
+  const usuario = userSnap.data()
+
+  if(!usuario.likedDogs.includes(idPerrico)){
+    usuario.likedDogs.push(idPerrico)
+    await setDoc(userRef, usuario);
+
+    const perricoRef = doc(db, "perretes", idPerrico);
+    const perricoSnap = await getDoc(perricoRef);
+
+    if (perricoSnap.exists()) {
+      const perrico = perricoSnap.data();
+      const likesActuales = perrico.likes || 0;
+      await setDoc(perricoRef, {
+        ...perrico,
+        likes: likesActuales + 1
       });
     }
-  });
-  return allBreeds;
-};
+  }else{
 
+    let indexPerrete = usuario.likedDogs.indexOf(idPerrico)
+    usuario.likedDogs.splice(indexPerrete, 1);
+    await setDoc(userRef, usuario)
+
+    const perricoRef = doc(db, "perretes", idPerrico);
+    const perricoSnap = await getDoc(perricoRef);
+
+    if (perricoSnap.exists()) {
+      const perrico = perricoSnap.data();
+      const likesActuales = perrico.likes;
+      await setDoc(perricoRef, {
+        ...perrico,
+        likes: likesActuales - 1
+      });
+    }
+
+  }
+  renderPerricoArray()
+}
+
+    
+
+/*
 async function renderSelector(){
   const breeds = await getRazas()
   
@@ -95,120 +161,6 @@ async function renderSelector(){
 }
 
 renderSelector()
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//
-//    Añadir un perrico
-//
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-const addPerrico = async () => {
-  await getPerrico()
-  renderBotonesPerricos()
-  renderPerricoArray(perricosArray);
-};
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//
-//    Añadir cinco perricos
-//
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-const addCincoPerrico = async () => {
-  
-  for(let i= 0; i<5; i++){
-    await getPerrico()
-  }
-  renderBotonesPerricos()
-  renderPerricoArray(perricosArray);
-};
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//
-//    Seleccionar el perrico
-//
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-function onlyOnePerrico(index){
-  
-  namePerricosArray[index].isSelected = !namePerricosArray[index].isSelected
-
-  const selectedPerricosNames = namePerricosArray.filter(boton => boton.isSelected).map(boton => boton.name)
-
-  if(selectedPerricosNames.length ===0){
-    renderBotonesPerricos()
-    renderPerricoArray(perricosArray)
-    return
-  }
-
-  const arrayPerricosToShow = perricosArray.filter(function (dog){
-    return selectedPerricosNames.includes(dog.perricoName)
-  })
-
-  renderBotonesPerricos()
-  renderPerricoArray(arrayPerricosToShow)
-}
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//
-//    Likear y Dislikear perricos
-//
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-function likePerrico(index){
-
-  if(perricosArray[index].isLiked){
-    perricosArray[index].isLiked = false
-    perricosArray[index].like -= 1 
-  }else{
-    perricosArray[index].isLiked = true
-    perricosArray[index].like += 1 
-  }
-
-  renderPerricoArray(perricosArray)
-  console.log(perricosArray[index])
-  console.log(perricosArray[index].like)
-}
-
-function dislikePerrico(index){
-
-  if(perricosArray[index].isDisliked){
-    perricosArray[index].isDisliked = false
-    perricosArray[index].dislike -= 1 
-  }else{
-    perricosArray[index].isDisliked = true
-    perricosArray[index].dislike += 1
-  }
-  renderPerricoArray(perricosArray)
-}
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-//
-//    Asinagión de botones
-//
-//----------------------------------------------------------------------------------------------------------------------------------------------------
-
-/*function enableAllButtons(){
-  document.querySelectorAll('.btn-perricos').addEventListener('click',  function () {
-    this.disabled = false
-  })
-}
-function disableAllButtons(){
-  document.querySelectorAll('.btn-perricos').addEventListener('click',  function () {
-    this.disabled = true
-  })
-}*/
-
-document.querySelector('#add-1-perrico').addEventListener('click', async function () {
-  //disableAllButtons()
-  await addPerrico();
-  //enableAllButtons()
-});
-
-document.querySelector('#add-5-perrico').addEventListener('click', async function () {
-  //disableAllButtons()
-  await addCincoPerrico();
-  //enableAllButtons()
-});
 
 document.querySelector('#buscador').addEventListener('input',function (e) {
   const palabra = e.target.value;
@@ -220,4 +172,4 @@ document.querySelector('#buscador').addEventListener('input',function (e) {
   })
   renderPerricoArray(arrayPerricosToShow)
 
-})
+})*/
