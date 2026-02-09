@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 // Config Firebase
 const firebaseConfig = {
@@ -16,8 +15,6 @@ const firebaseConfig = {
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
-
 
 // Inputs
 const userName = document.getElementById("email_user");
@@ -62,18 +59,3 @@ onAuthStateChanged(auth, (user) => {
         console.log('usuario no registrado')
     }
 });
-
-/*
-anyade.addEventListener('click', async()=>{
-    try {
-        const docRef = await addDoc(collection(db, "perretes"), {
-        raza: "Si",
-        subraza: "Señor",
-        edad: 24
-        });
-        console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-        console.error("Error adding document: ", e);
-    }
-})*/
-
