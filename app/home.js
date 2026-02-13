@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, collection, getDoc, doc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDoc, doc, setDoc, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBhhhR5vG6LyAbZ1afLjyh4kluNQgzzgmI",
@@ -146,9 +146,67 @@ async function likePerrico(idPerrico){
   renderPerricoArray()
 }
 
-    
 
-/*
+
+const btnAddPerro = document.getElementById("btn-add-perrete");
+
+btnAddPerro.addEventListener('click', async () => {
+
+  const perroName = document.getElementById("perro-name").value;
+  const perroAge = document.getElementById("perro-edad").value;
+  const perroBreed = document.getElementById("perrico-breed").value;
+  const perroDescripcion = document.getElementById("perro-descripcion").value;
+
+  await addDoc(collection(db, "perretes"), {
+    description: perroDescripcion,
+    edad: perroAge,
+    img: "https://static.wikia.nocookie.net/memes-pedia/images/e/ea/Mierdon-2.png/revision/latest/thumbnail/width/360/height/360?cb=20240916202302&path-prefix=es",
+    likes: 0,
+    nombre: perroName,
+    raza: perroBreed,
+    userOwner: userid
+  });
+
+  renderPerricoArray()
+});
+
+
+
+const btnopenPopUpAddPerrete = document.getElementById("btn-popUp-add-perrete");
+const btnclosePopUpAddPerrete  = document.getElementById("close-add-perrete");
+hidePopUp()
+
+btnclosePopUpAddPerrete.addEventListener('click', async () => {
+  hidePopUp()
+})
+
+btnopenPopUpAddPerrete.addEventListener('click', async () => {
+  const popUpAddPerrete = document.querySelector(".bg-black")
+  popUpAddPerrete.style.display = 'flex'
+})
+
+function hidePopUp() {
+  const popUpAddPerrete = document.querySelector(".bg-black")
+  popUpAddPerrete.style.display = 'none'
+}
+
+const getRazas= async () => {
+  const breeds= await getAllBreeds()
+
+  Object.keys(breeds).forEach(breed => {
+    const subreed = breeds[breed];
+
+    if(subreed.length === 0){
+      allBreeds.push(breed)
+    }else {
+      subreed.forEach(sub => {
+        allBreeds.push(breed + ' ' + sub)
+      });
+    }
+  });
+  return allBreeds;
+};
+
 async function renderSelector(){
   const breeds = await getRazas()
   
@@ -160,8 +218,9 @@ async function renderSelector(){
   }); 
 }
 
-renderSelector()
+renderSelector();
 
+/*
 document.querySelector('#buscador').addEventListener('input',function (e) {
   const palabra = e.target.value;
   if(palabra === ''){

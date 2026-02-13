@@ -20,6 +20,7 @@
             </ul>
         </nav>
     </div>
+
     <div class="header__container">
       <h1>Los perretes más on fire del país</h1>
       <div class="filters__container"> 
@@ -32,10 +33,41 @@
 
     <div id="dog-list"></div>
 
+    <div class="bg-black">
+      <div class="addPerrete__container">
+
+        <div class="addPerrete__container-header">
+          <h2>Añade a tu lindo perrito</h2>
+          <img class="addPerrete__container--close" src="../images/close_icon.png" id="close-add-perrete">
+        </div>
+
+        <div class="addPerrete__container-form">
+          <label for="perro-name">Nombre*</label>
+          <input type="text" id="perro-name" name="perro-name" placeholder="Tu perrete se llama" class="input-style" required>
+          <span class="error-form hidden">Por favor, introduce un nombre válido</span>
+
+          <label for="perro-edad" category="obligatory">Edad*</label>
+          <input type="number" id="perro-edad" name="edad" placeholder="10 añetes" class="error-input input-style" required>
+          <span class="error-form hidden">Por favor, introduce una edad valida</span>
+
+          <label for="breed">Raza</label>
+          <select id="perrico-breed">
+              <option value="random"> Raza Random </option>
+          </select>
+
+          <label>Texto sobre el perrete</label>
+          <textarea id="perro-descripcion" name="descripcion" maxlength="500" placeholder="Danos una descripcion sobre tu perrete" class="input-style" required></textarea>
+
+          <button id="btn-add-perrete" class="btn-positive">Añadir</button>
+        </div>
+      </div>
+    </div>
+
     <nav class="bottom-menu">
       <ul>
-        <li><img src="#"></li>
-        <li><img src="#"></li>
+        <li><img src="../images/home_icon.png"></li>
+        <li><img src="../images/plus_icon.png" alt="añadir contenido" id="btn-popUp-add-perrete" class="anyadir__perrete"></li>
+        <li><img src="../images/user_icon.png"></li>
       </ul>
     </nav>
   </body>
