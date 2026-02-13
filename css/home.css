@@ -8,6 +8,7 @@ body {
   padding: 0 10%;
   padding-bottom: 50px;
   position: relative;
+  background-color: #a79a8b;
 }
 h1, h2, p{
   margin: 0;
@@ -23,13 +24,16 @@ button:hover {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin: 2rem 0;
 }
 
 h1 {
   font-size: 28px;
   font-weight: 600;
 }
-
+.card {
+  background-color: #ffffff;
+}
 .btn-perricos {
   margin: 1rem 1rem;
   padding: 1rem 2rem;
@@ -49,6 +53,13 @@ h1 {
 }
 .btn-perricos:disabled{
   background-color: #524f61;
+}
+
+.allDogs__container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .btn-selected{

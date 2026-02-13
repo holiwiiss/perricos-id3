@@ -18,7 +18,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const perricosNombres = []; //esto era const
-const selector = document.getElementById("perrico-breed");
+
 const btnCerrarSesion = document.getElementById("cerrar-sesion");
 const allBreeds = []
 
@@ -146,27 +146,46 @@ async function likePerrico(idPerrico){
   renderPerricoArray()
 }
 
-
-
 const btnAddPerro = document.getElementById("btn-add-perrete");
 
 btnAddPerro.addEventListener('click', async () => {
 
   const perroName = document.getElementById("perro-name").value;
+  const errorPerroName = document.getElementById("error-perro-name");
+  //comprobaciones de que el usuario introduce un valor valido
+  if(perroName ==="" || /\d/.test(perroName)){
+    errorPerroName.classList.remove('hidden')
+    return
+  }
+
+  errorPerroName.classList.add('hidden')
+
+
   const perroAge = document.getElementById("perro-edad").value;
+  const errorPerroAge = document.getElementById("error-perro-edad");
+
+  //comprobaciones de que el usuario introduce un valor valido
+  if(perroAge === "" || perroAge < 0 || perroAge > 30 || isNaN(perroAge)){
+    errorPerroAge.classList.remove('hidden')
+    return
+  }
+
+  errorPerroAge.classList.add('hidden')
+
   const perroBreed = document.getElementById("perrico-breed").value;
   const perroDescripcion = document.getElementById("perro-descripcion").value;
 
   await addDoc(collection(db, "perretes"), {
     description: perroDescripcion,
     edad: perroAge,
-    img: "https://static.wikia.nocookie.net/memes-pedia/images/e/ea/Mierdon-2.png/revision/latest/thumbnail/width/360/height/360?cb=20240916202302&path-prefix=es",
+    img: await getRandomDogImage(),
     likes: 0,
     nombre: perroName,
     raza: perroBreed,
     userOwner: userid
   });
 
+  hidePopUp()
   renderPerricoArray()
 });
 
@@ -174,6 +193,8 @@ btnAddPerro.addEventListener('click', async () => {
 
 const btnopenPopUpAddPerrete = document.getElementById("btn-popUp-add-perrete");
 const btnclosePopUpAddPerrete  = document.getElementById("close-add-perrete");
+const popUpAddPerrete = document.querySelector(".bg-black")
+
 hidePopUp()
 
 btnclosePopUpAddPerrete.addEventListener('click', async () => {
@@ -181,14 +202,15 @@ btnclosePopUpAddPerrete.addEventListener('click', async () => {
 })
 
 btnopenPopUpAddPerrete.addEventListener('click', async () => {
-  const popUpAddPerrete = document.querySelector(".bg-black")
   popUpAddPerrete.style.display = 'flex'
 })
 
 function hidePopUp() {
-  const popUpAddPerrete = document.querySelector(".bg-black")
   popUpAddPerrete.style.display = 'none'
 }
+
+const selectorBreed = document.getElementById("perrico-breed");
+const selectorBreed2 = document.getElementById("perrico-breed2");
 
 const getRazas= async () => {
   const breeds= await getAllBreeds()
@@ -207,7 +229,10 @@ const getRazas= async () => {
   return allBreeds;
 };
 
-async function renderSelector(){
+renderSelector(selectorBreed)
+renderSelector(selectorBreed2)
+
+async function renderSelector(selector){
   const breeds = await getRazas()
   
   breeds.forEach(breed => {
@@ -218,7 +243,7 @@ async function renderSelector(){
   }); 
 }
 
-renderSelector();
+
 
 /*
 document.querySelector('#buscador').addEventListener('input',function (e) {

@@ -25,13 +25,13 @@
       <h1>Los perretes más on fire del país</h1>
       <div class="filters__container"> 
         <select id="perrico-breed">
-          <option value="random"> Raza Random</option>
+          <option value="random">Desconocida</option>
         </select>
         <input type="text" id="buscador" placeholder="Escribe algo..." />
       </div>
     </div>
 
-    <div id="dog-list"></div>
+    <div id="dog-list" class="allDogs__container"></div>
 
     <div class="bg-black">
       <div class="addPerrete__container">
@@ -44,15 +44,15 @@
         <div class="addPerrete__container-form">
           <label for="perro-name">Nombre*</label>
           <input type="text" id="perro-name" name="perro-name" placeholder="Tu perrete se llama" class="input-style" required>
-          <span class="error-form hidden">Por favor, introduce un nombre válido</span>
+          <span id="error-perro-name" class="error-form hidden">Por favor, introduce un nombre válido</span>
 
           <label for="perro-edad" category="obligatory">Edad*</label>
           <input type="number" id="perro-edad" name="edad" placeholder="10 añetes" class="error-input input-style" required>
-          <span class="error-form hidden">Por favor, introduce una edad valida</span>
+          <span id="error-perro-edad" class="error-form hidden">Por favor, introduce una edad valida</span>
 
           <label for="breed">Raza</label>
-          <select id="perrico-breed">
-              <option value="random"> Raza Random </option>
+          <select id="perrico-breed2">
+              <option value="random">Desconocida</option>
           </select>
 
           <label>Texto sobre el perrete</label>
