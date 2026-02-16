@@ -73,3 +73,35 @@ body{
     justify-content: center;
     border: 2px solid blue;
 }
+
+
+.bottom-menu {
+    position: fixed;
+    inset: auto auto 2rem 50%;
+    transform: translateX(-50%);
+    border: 1px solid rgba(46, 46, 46, 0.2);
+    border-radius: 999px;
+    background-color: #ffffff;
+    box-shadow: 0px 6px 5px 0px rgba(112, 112, 112, 0.1);
+
+    width: auto;
+}
+
+.bottom-menu ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    height: auto;
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.bottom-menu img {
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    margin: 0.75rem 4rem;
+}

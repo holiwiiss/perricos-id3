@@ -5,8 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil Usuario</title>
     <link rel="stylesheet" href="../css/perfil.css" />
+    <link rel="stylesheet" href="../css/topmenu.css" />
 </head>
 <body>
+
+    <div class="topbar__container">
+        <img src="#" alt="logo-web">
+        <nav>
+            <ul>
+                <li>
+                    <a class="topbar__container-links" id="cerrar-sesion">Cerrar sesión</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
     <h1>¡Hola Usuario!</h1>
     <img src="#" alt="icono_usuario">
     <header class="container-row">
@@ -47,13 +60,7 @@
             <div class="swiper">
             <!-- Additional required wrapper -->
             <div class="swiper-wrapper">
-                <!-- Slides -->
-                <div class="swiper-slide">Slide 1</div>
-                <div class="swiper-slide">Slide 2</div>
-                <div class="swiper-slide">Slide 3</div>
             </div>
-            
-
             <!-- If we need navigation buttons -->
             <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
@@ -79,9 +86,17 @@
         </article>
     </section>
 
+    <nav class="bottom-menu">
+        <ul>
+            <li><a href="home.html"><img src="../images/home_icon.png"></a></li>
+            <li><img src="../images/plus_icon.png" alt="añadir contenido" id="btn-popUp-add-perrete" class="anyadir__perrete"></li>
+            <li><img src="../images/user_icon.png" href="perfil.html"></li>
+        </ul>
+    </nav>
+
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
-    <script src="./perfil.js"></script>
+    <script type="module" src="./perfil.js"></script>
 </body>
 </html>

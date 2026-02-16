@@ -21,18 +21,30 @@ const userName = document.getElementById("email_user");
 const userPassword = document.getElementById("password_user");
 const emailSignInBtn = document.getElementById('email-signin-btn');
 const emailSignUpBtn = document.getElementById('email-signup-btn');
-//const anyade = document.getElementById('anyadir')
+const errorEmail = document.getElementById("error-user-email");
+const errorPassword = document.getElementById("error-user-password");
 
 emailSignInBtn.addEventListener('click', async () => {
     const email = userName.value;
     const password = userPassword.value;
 
+    if(email===""){
+        errorEmail.classList.remove("hidden")
+    }
+    errorEmail.classList.add("hidden")
+    if(password===""){
+        errorPassword.classList.remove("hidden")
+    }
+    errorPassword.classList.add("hidden")
+    
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         console.log('User signed in with email:', userCredential.user.email);
         //window.location.replace("../app/home.html");
     } catch (error) {
         console.error('Email sign in error:', error.message);
+        errorPassword.textContent = 'La contraseña o el correo electronico no coinciden'
+        errorPassword.classList.remove("hidden")
     }
 });
 
@@ -40,11 +52,22 @@ emailSignUpBtn.addEventListener('click', async () => {
     const email = userName.value;
     const password = userPassword.value;
 
+    if(email===""){
+        errorEmail.classList.remove("hidden")
+    }
+    errorEmail.classList.add("hidden")
+    if(password===""){
+        errorPassword.classList.remove("hidden")
+    }
+    errorPassword.classList.add("hidden")
+
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         console.log('User signed in with email:', userCredential.user.email);
         //window.location.replace("../app/home.html");
     } catch (error) {
+        errorPassword.classList.remove("hidden")
+        errorPassword.textContent = 'La contraseña debe tener al menos 6 digitos'
         console.error('Email sign in error:', error.message);
     }
 });

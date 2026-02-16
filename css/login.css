@@ -101,3 +101,14 @@ main {
     background-color: #684f34;
     color: #FAFAFA;
 }
+
+.error-form {
+  margin-top: -0.25rem;
+  color: rgb(183, 28, 28);
+  height: 500;
+  font-size: 12px;
+}
+
+.hidden {
+  display: none;
+}
